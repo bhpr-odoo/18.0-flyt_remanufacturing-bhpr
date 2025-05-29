@@ -1,0 +1,43 @@
+<odoo>
+    <record id="flyt_stock_lot_link_list_view" model="ir.ui.view">
+        <field name="name">flyt.stock.lot.link.inherit</field>
+        <field name="model">flyt.stock.lot.link</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="parent_lot_id" string="Parent Serial Number"/>
+                <field name="child_lot_id" string="Child Serial Number"/>
+                <field name="child_product_id" string="Child Product"/>
+                <field name="install_date" string="Install Date"/>
+                <field name="install_state" string="Install State"/>
+                <field name="remove_date" string="Remove Date"/>
+            </list>
+        </field>
+    </record>
+    <record id="flyt_stock_lot_link_form_view" model="ir.ui.view">
+        <field name="name">flyt.stock.lot.link.form.inherit</field>
+        <field name="model">flyt.stock.lot.link</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="parent_lot_id" string="Parent Serial Number"/>
+                        <field name="child_lot_id" string="Child Serial Number"/>
+                        <field name="install_date" string="Install Date"/>
+                        <field name="install_reference" string="Install Reference"/>
+                        <field name="remove_date" string="Remove Date"/>
+                        <field name="remove_reference" string="Remove Reference"/>
+                        <field name="install_state" string="Install State"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_serial_number_relation" model="ir.actions.act_window">
+        <field name="name">Serial Number Relation</field>
+        <field name="res_model">flyt.stock.lot.link</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" eval="False"/>
+    </record>
+    <menuitem id="menu_action_serial_number_relation" name="Serial Number Relation" parent="stock.menu_stock_inventory_control" action="action_serial_number_relation" groups="stock.group_stock_manager" />
+</odoo>
