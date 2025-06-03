@@ -16,8 +16,8 @@ class MrpProduction(models.Model):
 
     @api.onchange('flyt_mo_order_type')
     def _onchange_order_type_set_bom(self):
+        self.bom_id = False
         if self.flyt_mo_order_type == 'remanufacturing' and self.product_id:
-            self.bom_id = False
             reman_bom = self.env['mrp.bom'].search([
                 ('type', '=', 'remanufacture'),
                 ('product_tmpl_id', '=', self.product_tmpl_id.id)
@@ -25,7 +25,12 @@ class MrpProduction(models.Model):
             if reman_bom:
                 self.bom_id = reman_bom.id
         else:
-            self.bom_id = False
+            reman_bom = self.env['mrp.bom'].search([
+                ('type', '=', 'normal'),
+                ('product_tmpl_id', '=', self.product_tmpl_id.id)
+            ], limit=1)
+            if reman_bom:
+                self.bom_id = reman_bom.id
 
     def _get_move_raw_values(self, product, product_qty, product_uom, operation_id=False, bom_line=False):
         vals = super()._get_move_raw_values(product, product_qty, product_uom, operation_id, bom_line)
@@ -99,3 +104,4 @@ class MrpProduction(models.Model):
                                     "Product %s with serial number %s recycled", lot.product_id.name, lot.name
                                 ), message_type='comment', subtype_id=False)
         return res
+
